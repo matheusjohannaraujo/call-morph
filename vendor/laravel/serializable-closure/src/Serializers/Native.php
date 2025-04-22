@@ -3,13 +3,16 @@
 namespace Laravel\SerializableClosure\Serializers;
 
 use Closure;
+use DateTimeInterface;
 use Laravel\SerializableClosure\Contracts\Serializable;
 use Laravel\SerializableClosure\SerializableClosure;
 use Laravel\SerializableClosure\Support\ClosureScope;
 use Laravel\SerializableClosure\Support\ClosureStream;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Laravel\SerializableClosure\Support\SelfReference;
+use Laravel\SerializableClosure\UnsignedSerializableClosure;
 use ReflectionObject;
+use ReflectionProperty;
 use UnitEnum;
 
 class Native implements Serializable
@@ -242,7 +245,7 @@ class Native implements Serializable
             }
 
             unset($value);
-        } elseif (is_object($data) && ! $data instanceof static) {
+        } elseif (is_object($data) && ! $data instanceof static && ! $data instanceof UnitEnum) {
             if (isset($storage[$data])) {
                 $data = $storage[$data];
 
@@ -272,7 +275,7 @@ class Native implements Serializable
 
                     $property->setAccessible(true);
 
-                    if (PHP_VERSION >= 7.4 && ! $property->isInitialized($instance)) {
+                    if (! $property->isInitialized($instance)) {
                         continue;
                     }
 
@@ -372,13 +375,13 @@ class Native implements Serializable
 
                     $property->setAccessible(true);
 
-                    if (PHP_VERSION >= 7.4 && ! $property->isInitialized($data)) {
+                    if (! $property->isInitialized($data) || $property->isReadOnly()) {
                         continue;
                     }
 
                     $item = $property->getValue($data);
 
-                    if ($item instanceof SerializableClosure || ($item instanceof SelfReference && $item->hash === $this->code['self'])) {
+                    if ($item instanceof SerializableClosure || $item instanceof UnsignedSerializableClosure || ($item instanceof SelfReference && $item->hash === $this->code['self'])) {
                         $this->code['objects'][] = [
                             'instance' => $data,
                             'property' => $property,
@@ -451,7 +454,7 @@ class Native implements Serializable
             }
 
             unset($value);
-        } elseif (is_object($data) && ! $data instanceof SerializableClosure) {
+        } elseif (is_object($data) && ! $data instanceof SerializableClosure && ! $data instanceof UnsignedSerializableClosure) {
             if (isset($this->scope[$data])) {
                 $data = $this->scope[$data];
 
@@ -459,6 +462,12 @@ class Native implements Serializable
             }
 
             $instance = $data;
+
+            if ($data instanceof DateTimeInterface) {
+                $this->scope[$instance] = $data;
+
+                return;
+            }
 
             if ($data instanceof UnitEnum) {
                 $this->scope[$instance] = $data;
@@ -482,13 +491,13 @@ class Native implements Serializable
                 }
 
                 foreach ($reflection->getProperties() as $property) {
-                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined()) {
+                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined() || $this->isVirtualProperty($property)) {
                         continue;
                     }
 
                     $property->setAccessible(true);
 
-                    if (PHP_VERSION >= 7.4 && ! $property->isInitialized($instance)) {
+                    if (! $property->isInitialized($instance) || ($property->isReadOnly() && $property->class !== $reflection->name)) {
                         continue;
                     }
 
@@ -502,5 +511,16 @@ class Native implements Serializable
                 }
             } while ($reflection = $reflection->getParentClass());
         }
+    }
+
+    /**
+     * Determine is virtual property.
+     *
+     * @param  \ReflectionProperty  $property
+     * @return bool
+     */
+    protected function isVirtualProperty(ReflectionProperty $property): bool
+    {
+        return method_exists($property, 'isVirtual') && $property->isVirtual();
     }
 }

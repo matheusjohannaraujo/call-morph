@@ -15,6 +15,10 @@ class ComposerStaticInit29fa24b3cc6ed8935e8022815292c951
         array (
             'Opis\\Closure\\' => 13,
         ),
+        'M' => 
+        array (
+            'MJohann\\Packlib\\' => 16,
+        ),
         'L' => 
         array (
             'Laravel\\SerializableClosure\\' => 28,
@@ -25,6 +29,10 @@ class ComposerStaticInit29fa24b3cc6ed8935e8022815292c951
         'Opis\\Closure\\' => 
         array (
             0 => __DIR__ . '/..' . '/opis/closure/src',
+        ),
+        'MJohann\\Packlib\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'Laravel\\SerializableClosure\\' => 
         array (
