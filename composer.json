@@ -1,6 +1,6 @@
 {
     "name": "mjohann/call-morph",
-    "description": "CallMorph is a PHP class that offers a clean and reusable abstraction for working with RabbitMQ. It simplifies the process of connecting to message queues and performing common operations like publishing messages, consuming queues, acknowledging deliveries, and managing exchanges and bindings.",
+    "description": "CallMorph is a PHP class that provides a simple and secure interface for serializing and unserializing anonymous functions (Closures). It automatically detects the PHP version and uses the appropriate library for maximum compatibility and security, including support for a secret key when using Laravel's Serializable Closures.",
     "type": "library",
     "license": "MIT",
     "authors": [

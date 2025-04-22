@@ -1,6 +1,6 @@
 # [Call Morph](https://github.com/matheusjohannaraujo/call-morph)
 
-**CallMorph** is a PHP class that offers a clean and reusable abstraction for working with RabbitMQ. It simplifies the process of connecting to message queues and performing common operations like publishing messages, consuming queues, acknowledging deliveries, and managing exchanges and bindings — all without having to deal with the complexity of the underlying configuration.
+**CallMorph** is a PHP class that provides a simple and secure interface for serializing and unserializing anonymous functions (Closures). It automatically detects the PHP version and uses the appropriate library for maximum compatibility and security, including support for a secret key when using Laravel's Serializable Closures.
 
 ## 📦 Installation
 
@@ -13,15 +13,22 @@ composer require mjohann/call-morph
 ## ⚙️ Requirements
 
 - PHP 7.0 or higher
+- For PHP >= 8.1: [laravel/serializable-closure](https://packagist.org/packages/laravel/serializable-closure) must be installed.
+- For PHP < 8.1: [opis/closure](https://packagist.org/packages/opis/closure) is required.
 
 ## 🚀 Features
 
-- Supported:
-    - __construct
-    - getSecret
-    - setSecret
-    - serialize
-    - unserialize
+- Serialize and unserialize Closures with automatic compatibility based on PHP version
+- Supports secret key configuration for secure serialization in Laravel
+- Simple and clean API
+
+### Available Methods
+
+- `__construct(string $secret)`
+- `getSecret(): string`
+- `setSecret(string $secret): void`
+- `serialize(Closure $callback): string`
+- `unserialize(string $callback): Closure`
 
 ## 🧪 Usage Example
 

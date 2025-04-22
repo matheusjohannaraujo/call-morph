@@ -3,7 +3,7 @@
         'name' => 'mjohann/call-morph',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'c8d9043645ea83f0536ca0daf88ffdea827dc62b',
+        'reference' => 'dbe74142b613d12ef244871356d1dadd1d879a37',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'mjohann/call-morph' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'c8d9043645ea83f0536ca0daf88ffdea827dc62b',
+            'reference' => 'dbe74142b613d12ef244871356d1dadd1d879a37',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

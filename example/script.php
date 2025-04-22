@@ -10,7 +10,9 @@ $closure = function () use ($name) {
     return "My name is " . $name . " - Rand: " . rand(0, 999);
 };
 
+// Using a Facade to instantiate and configure an instance of the SimpleRabbitMQ class.
 CallMorph::init("secret");
+
 $serialized = CallMorph::serialize($closure);
 echo "CallMorph::serialize", PHP_EOL;
 var_dump($serialized);
