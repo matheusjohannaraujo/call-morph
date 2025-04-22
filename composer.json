@@ -1,6 +1,6 @@
 {
     "name": "mjohann/call-morph",
-    "description": "CallMorph is a PHP class that provides a simple and secure interface for serializing and unserializing anonymous functions (Closures). It automatically detects the PHP version and uses the appropriate library for maximum compatibility and security, including support for a secret key when using Laravel's Serializable Closures.",
+    "description": "CallMorph is a PHP class that simplifies and secures the serialization of anonymous functions by automatically selecting the appropriate library based on the PHP version, with support for a secret key when using Laravel's Serializable Closures.",
     "type": "library",
     "license": "MIT",
     "authors": [
